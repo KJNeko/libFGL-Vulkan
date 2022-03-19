@@ -34,15 +34,15 @@ include_directories(${INCLUDE_DIR})
 include_directories(${SOURCE_DIR})
 
 add_custom_command(
-    OUTPUT "${CMAKE_SOURCE_DIR}/Square.spv"
+    OUTPUT "${CMAKE_SOURCE_DIR}/Sort.spv"
     #COMMAND /home/kj16609/Desktop/1.2.198.1/x86_64/bin/dxc -T cs_6_0 -E "Main" -spirv -fvk-use-dx-layout -fspv-target-env=vulkan1.1 -Fo "${SOURCE_DIR}/Square.spv" "${SOURCE_DIR}/Square.hlsl"
-    COMMAND glslc "${SOURCE_DIR}/Square.comp" -o "${CMAKE_SOURCE_DIR}/Square.spv"
-    DEPENDS "${SOURCE_DIR}/Square.comp"
+    COMMAND glslc "${SOURCE_DIR}/Sort.comp" -o "${CMAKE_SOURCE_DIR}/Sort.spv"
+    DEPENDS "${SOURCE_DIR}/Sort.comp"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Buiding Shaders"
 )
 
-add_custom_target(ComputeShader DEPENDS "${CMAKE_SOURCE_DIR}/Square.spv")
+add_custom_target(ComputeShader DEPENDS "${CMAKE_SOURCE_DIR}/Sort.spv")
 
 file(GLOB_RECURSE SOURCES
     "${SOURCE_DIR}/*.cpp"

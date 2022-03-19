@@ -1,0 +1,88 @@
+#version 450 core
+
+layout(local_size_x = 64, local_size_y = 1) in;
+
+layout(binding = 0) buffer InputBuffer{
+	uint matrixsize;
+	uint flip;
+	uint inData[];
+} inputDat;
+
+//To make things easier I am just working with raw uint. This is pretty bad but whatever.
+
+//Buffer layout (inData)
+/*
+	workingSet (size == matrixsize * 2)
+	distanceCalc (size == matrixsize * 2)
+	seperationIndex (size == matrixSize)
+	treeSeperationPoint (size == matrixSize)
+*/
+
+
+//32 bit values
+struct test
+{
+	uint high;
+	uint low;
+};
+
+void flip(uint index1, uint index2)
+{
+	//Temp store
+	uint high;
+	uint low;
+
+	//Flip high
+	high = inputDat.inData[index1];
+	inputDat.inData[index1] = inputDat.inData[index2];
+	inputDat.inData[index2] = high;
+
+
+	//flip low
+	low = inputDat.inData[index1 + 1];
+	inputDat.inData[index1 + 1] = inputDat.inData[index2 + 1];
+	inputDat.inData[index2 + 1] = low;
+}
+
+//Left to right, Least to most
+bool sort64(uint index1, uint index2)
+{
+	//Check high 
+	if(inputDat.inData[index1] > inputDat.inData[index2])
+	{
+		flip(index1, index2);
+		return true;
+	}
+	else
+	{
+		//Check low
+		if(inputDat.inData[index1 + 1] > inputDat.inData[index2])
+		{
+			flip(index1, index2);
+			return true;
+		}
+	}
+	//No flip since it's sorted.
+	return false;
+}
+
+bool sort32(uint index1, uint index2)
+{
+	if(inputDat.inData[index1] > inputDat.inData[index2])
+	{
+		//Flip
+		uint temp;
+		temp = inputDat.inData[index1];
+		inputDat.inData[index1] = inputDat.inData[index2];
+		inputDat.inData[index2] = temp;
+		return true;
+	}
+	return false;
+}
+
+void main(void)
+{
+
+
+
+}
