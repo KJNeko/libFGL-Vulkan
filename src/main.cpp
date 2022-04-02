@@ -87,7 +87,7 @@ void gpu(unsigned int lookFor, std::vector<unsigned int> data)
 	//Start timer here
 
 	fgl::vulkan::AppInfo info(
-		VK_API_VERSION_1_3,
+		VK_API_VERSION_1_2,
 		{ "VK_LAYER_KHRONOS_validation" },
 		{},
 		1,
@@ -211,7 +211,7 @@ std::pair<unsigned int, std::vector<unsigned int>> getData(size_t size, size_t d
 void printDebug()
 {
 	fgl::vulkan::AppInfo info(
-		VK_API_VERSION_1_3,
+		VK_API_VERSION_1_2,
 		{ "" },
 		{},
 		1,
