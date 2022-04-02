@@ -232,18 +232,27 @@ int main() try
 	{
 		for(size_t mult = 1; mult < 6000000000 / sizeof(unsigned int); mult *= 2)
 		{
-			counts.push_back(mult);
+			try
+			{
+				counts.push_back(mult);
 
-			auto data = getData(mult,2);
+				auto data = getData(mult,2);
 
-			cpu(data.first, data.second);
-			std::this_thread::yield();
-			gpu(data.first, data.second);
-			std::this_thread::yield();
-			std::cout << "Sleeping for 2000ms to prevent vkCreateDevice overloading the gpu" << std::endl;
-			std::this_thread::sleep_for(2000ms);
+				cpu(data.first, data.second);
+				std::this_thread::yield();
+				gpu(data.first, data.second);
+				std::this_thread::yield();
+				std::cout << "Sleeping for 2000ms to prevent vkCreateDevice overloading the gpu" << std::endl;
+				std::this_thread::sleep_for(2000ms);
 
-			std::cout << std::setfill('=') << std::setw(80) << ' ' << std::setfill(' ') << std::endl;
+				std::cout << std::setfill('=') << std::setw(80) << ' ' << std::setfill(' ') << std::endl;
+			}
+			catch(...)
+			{
+				//test failed
+				std::cout << "test has failed. Count: " << mult << std::endl;
+			}
+
 		}
 	}
 
