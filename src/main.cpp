@@ -208,7 +208,7 @@ std::pair<unsigned int, std::vector<unsigned int>> getData(size_t size, size_t d
 	return std::pair(lookFor, data);
 }
 
-void printDebug()
+uint32_t printDebug()
 {
 	fgl::vulkan::AppInfo info(
 		VK_API_VERSION_1_2,
@@ -221,6 +221,8 @@ void printDebug()
 	fgl::vulkan::Context inst( info );
 
 	inst.print_debug_info();
+
+	return inst.physical_device.getProperties().limits.maxStorageBufferRange;
 }
 
 
@@ -228,10 +230,19 @@ int main() try
 {
 	using namespace std::literals::chrono_literals;
 
+	auto maxBuffer = printDebug();
+
+
 	for(size_t i = 0; i < 10; ++i)
 	{
 		for(size_t mult = 1; mult < 6000000000 / sizeof(unsigned int); mult *= 2)
 		{
+			if(mult * sizeof(unsigned int) > maxBuffer)
+			{
+				std::cout << "Test is over the maxStorageBufferRange of the gpu. Ignoring" << std::endl;
+				continue;
+			}
+
 			counts.push_back(mult);
 
 			auto data = getData(mult,2);
