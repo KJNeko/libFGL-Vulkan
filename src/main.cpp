@@ -7,6 +7,8 @@
 #include <filesystem>
 #include <fstream>
 #include <bitset>
+#include <thread>
+#include <chrono>
 
 #include <string_view>
 #include <iostream> // cout, cerr, endl
@@ -113,7 +115,7 @@ void gpu(unsigned int lookFor, std::vector<unsigned int> data)
 		uint32_t& maxSize = in_buffer_data[0];
 		uint32_t& lookForValue = in_buffer_data[1];
 
-		maxSize = data.size();
+		maxSize = static_cast<unsigned int>(data.size());
 		lookForValue = lookFor;
 
 		uint32_t* data = &in_buffer_data[2];
@@ -224,6 +226,8 @@ void printDebug()
 
 int main() try
 {
+	using namespace std::literals::chrono_literals;
+
 	for(size_t i = 0; i < 10; ++i)
 	{
 		for(size_t mult = 1; mult < 6000000000 / sizeof(unsigned int); mult *= 2)
@@ -233,7 +237,11 @@ int main() try
 			auto data = getData(mult,2);
 
 			cpu(data.first, data.second);
+			std::this_thread::yield();
 			gpu(data.first, data.second);
+			std::this_thread::yield();
+			std::cout << "Sleeping for 2000ms to prevent vkCreateDevice overloading the gpu" << std::endl;
+			std::this_thread::sleep_for(2000ms);
 
 			std::cout << std::setfill('=') << std::setw(80) << ' ' << std::setfill(' ') << std::endl;
 		}
