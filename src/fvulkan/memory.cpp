@@ -103,9 +103,9 @@ namespace fgl::vulkan
 	{
 		constexpr vk::DeviceSize offset { 0 };
 		buffer.bindMemory( *memory, offset );
-		std::cout
+		/*std::cout
 			<< "\n\tAllocated " << size << " bytes to binding: " << binding_
-			<< std::endl;
+			<< std::endl;*/
 	}
 
 	void* Buffer::get_memory() const

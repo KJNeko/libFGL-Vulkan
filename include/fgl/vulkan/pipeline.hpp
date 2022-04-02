@@ -145,7 +145,7 @@ namespace fgl::vulkan
 			}
 
 			cntx.device.updateDescriptorSets( writeset, nullptr );
-			std::cout << "\n\tConstructed Pipeline with " << buffers.size() << " buffers." << std::endl;
+			//std::cout << "\n\tConstructed Pipeline with " << buffers.size() << " buffers." << std::endl;
 		}
 	};
 

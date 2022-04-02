@@ -3,28 +3,18 @@
 layout(local_size_x = 2, local_size_y = 2) in;
 
 layout(binding = 0) readonly buffer InputBuffer{
-    int matrixsize;
+    uint arraySize;
+    uint findValue;
     uint inData[];
 } inputDat;
 
-layout(set = 0, binding = 1) buffer OutputBuffer
-{
-    uint outData[];
-} outputData;
-
 void main(void)
 {
-
-    uint index = gl_GlobalInvocationID.x;
-    uint indexy = gl_GlobalInvocationID.y;
-
-    uint outindex = (indexy * inputDat.matrixsize) + index;
-
-    if(outindex > inputDat.matrixsize * inputDat.matrixsize)
+    for(uint i = 0; i < inputDat.arraySize; ++i)
     {
-        return;
-        //Return early to prevent the shader from accessing invalid/unallocated memory
+        if(inputDat.inData[i] == inputDat.findValue)
+        {
+            return;
+        }
     }
-
-    outputData.outData[outindex] = inputDat.inData[indexy] * inputDat.inData[index];
 }

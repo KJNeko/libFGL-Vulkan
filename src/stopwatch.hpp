@@ -25,7 +25,7 @@ class Stopwatch
 {
 	typedef std::chrono::steady_clock clock;
 
-protected:
+public:
 	const std::string m_name;
 	const std::chrono::time_point<clock> m_unset{};
 	std::vector<std::chrono::time_point<clock>> m_laps{};
